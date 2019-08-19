@@ -24,7 +24,7 @@ const SeasonArchive = props => {
               return (
                 <>
                   <Link className='seasonLink' to={{
-                    pathname: `/test/${season}${year}`,
+                    pathname: `/archives/${season}${year}`,
                     state: {
                       season: season,
                       year: year

@@ -13,7 +13,7 @@ function App() {
 
       <Route exact path="/"	component = {WeeklySchedule}/>
       <Route path="/archive"	component = {SeasonArchive}/>
-      <Route path="/test/:selection"	component = {AllSeasons}/>
+      <Route path="/archives/:selection"	component = {AllSeasons}/>
 
     </div>
   );
