@@ -24,11 +24,11 @@ const AnimeList = props => {
   const classes = useStyles();    
 
   return(
-    <Grid container spacing={3}>
+    <Grid container spacing={3} style={{width:'100%'}} >
     {animes &&
         animes.map(anime => {
       return(
-          <Grid item xs>
+          <Grid item xs style={{padding:'0'}}>
             <Anime key={anime.id} anime={anime} />
           </Grid>
         )
