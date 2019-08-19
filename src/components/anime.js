@@ -82,6 +82,16 @@ const Anime = props => {
     <p style={{margin:'0'}}>{props.anime.studios.nodes[0].name}</p> :
     <p></p>;
 
+    const airingInfo = props.anime.status === 'RELEASING' ?
+    <>
+      <h5>{curEpisode} {episodes} airing in</h5>
+      <h4>{days} days, {hours} hours</h4> 
+    </> :
+    <>
+      <h5>{episodes} episodes</h5>
+      <h4>Completed</h4>
+    </>;
+
   return (
     <Card className={classes.card}>
       <div className={classes.content}>
@@ -100,8 +110,7 @@ const Anime = props => {
         <div style={{ height: '10%', backgroundColor: 'white'}}>Score: {props.anime.averageScore}</div>
         <CardContent className={classes.cardInfo} style={{ }}>
           <p style={{margin:'0'}}>{props.anime.format}</p>
-          <h5>{curEpisode} {episodes} airing in</h5>
-          <h4>{days} days, {hours} hours</h4>
+          {airingInfo}
           <h6>Source: {props.anime.source}</h6>
           <p>{ReactHtmlParser (props.anime.description)}</p>
         </CardContent>

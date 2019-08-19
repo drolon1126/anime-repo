@@ -38,6 +38,7 @@ export const getAnimeData = (vars) => {
           timeUntilAiring
           episode
         }
+        status
         studios(isMain: true){
           nodes {
             name

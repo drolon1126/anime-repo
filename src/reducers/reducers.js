@@ -9,7 +9,7 @@ const initialState = {
     perPage:null,
     total:null
   },
-  monday:[],
+  status: '',
   animes: [{
     averageScore:null,
     coverImage:{
