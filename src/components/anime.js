@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactHtmlParser from 'react-html-parser'; 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -102,7 +103,7 @@ const Anime = props => {
           <h5>{curEpisode} {episodes} airing in</h5>
           <h4>{days} days, {hours} hours</h4>
           <h6>Source: {props.anime.source}</h6>
-          <p>{props.anime.description}</p>
+          <p>{ReactHtmlParser (props.anime.description)}</p>
         </CardContent>
         <CardActions className={classes.genres}>
           {props.anime.genres.map(genre=>{return(<p className={classes.genresP}>{genre}</p>);})}

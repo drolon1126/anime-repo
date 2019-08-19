@@ -77,6 +77,7 @@ const WeeklySchedule = props => {
     
   return(
     <div>
+      <h1 style={{marginTop:0}}>Currently Airing Animu!</h1>
       <div>
         <h2>Sunday</h2>
         <AnimeList animes={sun} />

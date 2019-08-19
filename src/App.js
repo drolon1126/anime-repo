@@ -1,15 +1,19 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import './App.css';
-import AllAiring from './components/allAiring';
+import NavBar from './components/navBar';
+import AllSeasons from './components/allSeasons';
 import WeeklySchedule from './components/weeklySchedule';
+import SeasonArchive from './components/seasonArchive';
 
 function App() {
   return (
     <div className="App">
-      <h1 style={{marginTop:0}}>Currently Airing Animu!</h1>
-      
+      <NavBar/>
+
       <Route exact path="/"	component = {WeeklySchedule}/>
+      <Route path="/archive"	component = {SeasonArchive}/>
+      <Route path="/test/:selection"	component = {AllSeasons}/>
 
     </div>
   );
