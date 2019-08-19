@@ -82,15 +82,36 @@ const Anime = props => {
     <p style={{margin:'0'}}>{props.anime.studios.nodes[0].name}</p> :
     <p></p>;
 
-    const airingInfo = props.anime.status === 'RELEASING' ?
+    const airingInfo = () => { 
+    
+    switch(props.anime.status){
+      case 'RELEASING':
+        return(
     <>
       <h5>{curEpisode} {episodes} airing in</h5>
       <h4>{days} days, {hours} hours</h4> 
-    </> :
+    </>);
+    case 'FINISHED':
+      return (
     <>
       <h5>{episodes} episodes</h5>
       <h4>Completed</h4>
-    </>;
+    </>
+    );
+    case 'NOT_YET_RELEASED':
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      const dateString = props.anime.startDate.day!==null ? 
+      <h4>{`${monthNames[props.anime.startDate.month-1]} ${props.anime.startDate.day}, ${props.anime.startDate.year}`}</h4> :
+      <h4>{`${monthNames[props.anime.startDate.month-1]} ${props.anime.startDate.year}`}</h4>;
+      return (
+        <>
+        <h5>Airing on</h5>
+        {dateString}
+        </>
+      );
+    }}
 
   return (
     <Card className={classes.card}>
@@ -110,7 +131,7 @@ const Anime = props => {
         <div style={{ height: '10%', backgroundColor: 'white'}}>Score: {props.anime.averageScore}</div>
         <CardContent className={classes.cardInfo} style={{ }}>
           <p style={{margin:'0'}}>{props.anime.format}</p>
-          {airingInfo}
+          {airingInfo()}
           <h6>Source: {props.anime.source}</h6>
           <p>{ReactHtmlParser (props.anime.description)}</p>
         </CardContent>
