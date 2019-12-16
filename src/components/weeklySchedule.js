@@ -1,84 +1,81 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {getAnimeData} from '../actions/actions';
+import { getAnimeData } from '../actions/actions';
 
 import AnimeList from './animeList';
 
 const WeeklySchedule = props => {
-  const animes = useSelector(state=>state.animes);
-  const pageInfo = useSelector(state=>state.pageInfo);
-  const [loaded,setLoaded] = useState(0);
-  const [sun,setSun] = useState([]);
-  const [mon,setMon] = useState([]);
-  const [tues,setTues] = useState([]);
-  const [wed,setWed] = useState([]);
-  const [thurs,setThurs] = useState([]);
-  const [fri,setFri] = useState([]);
-  const [sat,setSat] = useState([]);
-  const [page,setPage] = useState(1);
+  const animes = useSelector(state => state.animes);
+  const pageInfo = useSelector(state => state.pageInfo);
+  const [initiated, setinit] = useState(0);
+  const [loading, setLoading] = useState(1);
+  const [sun, setSun] = useState([]);
+  const [mon, setMon] = useState([]);
+  const [tues, setTues] = useState([]);
+  const [wed, setWed] = useState([]);
+  const [thurs, setThurs] = useState([]);
+  const [fri, setFri] = useState([]);
+  const [sat, setSat] = useState([]);
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getAnimeData({
-      status: 'RELEASING',
-      page: 1,
-      perPage: 50,
-      format: 'TV'
-    }));
-    setLoaded(1);
-  },[]);
-
-  const getAnime = (pageNo) =>{
+  const getAnime = (pageNo) => {
     dispatch(
       getAnimeData({
         status: 'RELEASING',
         page: pageNo,
         perPage: 50,
         format: 'TV'
-    }));
+      }));
   }
 
-  useEffect(()=>{
-    if(animes && loaded){
-      const now = new Date().getTime();
-      /*let tmp = animes.filter(anime => {
-        if(anime.nextAiringEpisode===null){
-          return false;
-        } else{
-          let airDay = new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay();
-          return airDay === 1;
-        }
-      })*/
-      const tmp = animes.filter(anime=>anime.nextAiringEpisode!==null);
-      const tmpSun = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===0);
-      const tmpMon = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===1);
-      const tmpTues = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===2);
-      const tmpWed = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===3);
-      const tmpThurs = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===4);
-      const tmpFri = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===5);
-      const tmpSat = tmp.filter(anime=>new Date(now + (anime.nextAiringEpisode.timeUntilAiring*1000)).getDay()===6);
+  const populateWeeks = () =>{
+    const now = new Date().getTime();
+      
+      const tmp = animes.filter(anime => anime.nextAiringEpisode !== null);
+      let weekArray = [];
 
-      setSun([...sun,...tmpSun]);
-      setMon([...mon,...tmpMon]);
-      setTues([...tues,...tmpTues]);
-      setWed([...wed,...tmpWed]);
-      setThurs([...thurs,...tmpThurs]);
-      setFri([...fri,...tmpFri]);
-      setSat([...sat,...tmpSat]);
-
-      if(pageInfo.lastPage>1 && page !== pageInfo.lastPage){
-        getAnime(page+1);
-        setPage(page+1);
+      for (let i=0;i<7;i++){
+        weekArray[i] = tmp.filter(anime => new Date(now + (anime.nextAiringEpisode.timeUntilAiring * 1000)).getDay() === i);
       }
-    }
-  },[animes]);
 
-    
-  return(
+      setSun([...sun, ...weekArray[0]]);
+      setMon([...mon, ...weekArray[1]]);
+      setTues([...tues, ...weekArray[2]]);
+      setWed([...wed, ...weekArray[3]]);
+      setThurs([...thurs, ...weekArray[4]]);
+      setFri([...fri, ...weekArray[5]]);
+      setSat([...sat, ...weekArray[6]]);
+
+
+      if (pageInfo.lastPage > 1 && page !== pageInfo.lastPage) {
+        getAnime(page + 1);
+        setPage(page + 1);
+      } else {
+        setLoading(0);
+      }
+  }
+
+  useEffect(() => {
+    if (animes && initiated) {
+      populateWeeks();
+    } else {
+      getAnime(1);
+      setinit(1);
+    }
+  }, [animes]);
+  
+
+  return (
     <div>
-      <h1 style={{marginTop:0}}>Currently Airing Animu!</h1>
-      <div>
+      <h1 style={{ marginTop: 0 }}>Currently Airing Anime</h1>
+      {loading ? (
+        <>
+        </>
+      ) : (
+        <>
+        <div>
         <h2>Sunday</h2>
         <AnimeList animes={sun} />
       </div>
@@ -106,6 +103,8 @@ const WeeklySchedule = props => {
         <h2>Saturday</h2>
         <AnimeList animes={sat} />
       </div>
+      </>
+      )}
     </div>
   );
 }
