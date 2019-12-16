@@ -3,6 +3,13 @@ import axios from 'axios';
 export const FETCH_ANIME_DATA_START = 'FETCH_ANIME_DATA_START';
 export const FETCH_ANIME_DATA_SUCCESS = 'FETCH_ANIME_DATA_SUCCESS';
 export const FETCH_ANIME_DATA_FAILURE = 'FETCH_ANIME_DATA_FAILURE';
+export const CLEAR_STATE = 'CLEAR_STATE';
+
+export const clearState = () => {
+  return dispatch => {
+    dispatch({ type: CLEAR_STATE });
+  }
+}
 
 export const getAnimeData = (vars) => {
   let query = `

@@ -11,38 +11,31 @@ const AllSeasons = props => {
   const pageInfo = useSelector(state=>state.pageInfo);
   const dispatch = useDispatch();
 
-
-  useEffect(()=>{
-    dispatch(getAnimeData({
-      season: props.location.state.season,
-      seasonYear: props.location.state.year,
-      page: 1,
-      perPage: 10,
-      format: 'TV'
-  }));
-  },[]);
-
   const getAnime = pageNo =>{
     dispatch(
       getAnimeData({
-        season: props.location.state.season,
-        seasonYear: props.location.state.year,
+        season: props.season,
+        seasonYear: props.year,
         page: pageNo,
-        perPage: 10,
+        perPage: 8,
         format: 'TV'
     }));
-  } 
-  console.log("Test", props); 
+  }
 
   return(
     <div className='anilist'>
-      <h2>{`Anime From ${props.location.state.season} ${props.location.state.year}`}</h2>
+      <h2>{`Anime From ${props.season} ${props.year}`}</h2>
     <div className='pageNav'>
       <div className='pageSelector' onClick={()=>{getAnime(pageInfo.currentPage - 1<1? 1:pageInfo.currentPage-1)}}>{'<'}</div>
       {createPages(pageInfo,getAnime)}
       <div className='pageSelector' onClick={()=>{getAnime(pageInfo.currentPage + 1>pageInfo.lastPage ? pageInfo.lastPage:pageInfo.currentPage+1)}}>{'>'}</div>
     </div>
-      <AnimeList animes={animes} />
+      {(animes[0].title.romaji!='') ? (
+        <AnimeList animes={animes} />
+      ) : (
+        <></>
+      )}
+      
     </div>
   );
 }

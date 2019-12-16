@@ -1,4 +1,4 @@
-import {FETCH_ANIME_DATA_START, FETCH_ANIME_DATA_SUCCESS, FETCH_ANIME_DATA_FAILURE} from '../actions/actions';
+import {FETCH_ANIME_DATA_START, FETCH_ANIME_DATA_SUCCESS, FETCH_ANIME_DATA_FAILURE, CLEAR_STATE} from '../actions/actions';
 
 const initialState = {
   isLoading: false,
@@ -65,6 +65,8 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         error: action.payload
       };
+      case CLEAR_STATE:
+        return initialState;
       default:
         return state;
     }
